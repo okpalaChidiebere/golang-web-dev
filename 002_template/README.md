@@ -10,6 +10,10 @@ Think of Facebook - you log into your main page and see results tailored for you
 
 Another common exposure to templates that most of us get every day - junk mail.
 
+Templates are very important when it comes to web development, especially when it comes to HTML pages. for example we use a lot of templates in Front-end frameworks like Angular, react, Vue, etc; but in our case we will use Go!
+
+Go encourages thinking like a programmer or is a there a programmatic approach to solving a program instead of just relying on some library that has been written for you
+
 A company creates a piece of mail to send to everyone, and then they merge data with that template to customize the mailing for each individual. The result:
 
 ## Template Example - Merged With Data
