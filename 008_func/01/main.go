@@ -26,11 +26,15 @@ type car struct {
 // "ft" is a func I declared
 // "ft" slices a string, returning the first three characters
 var fm = template.FuncMap{
-	"uc": strings.ToUpper,
+	"uc": strings.ToUpper, //we are assigning the ToUpper function from the string package to a key
 	"ft": firstThree,
 }
 
+//more on FuncMap method here https://golang.org/pkg/text/template/#FuncMap
+
 func init() {
+	//You MUST define the function that will be used in your template before you parse them!
+	//template.New("") creats a template without any name, then we attach a function to it .Func() then we Parse the file using .ParseFiles()
 	tpl = template.Must(template.New("").Funcs(fm).ParseFiles("tpl.gohtml"))
 }
 
@@ -82,6 +86,7 @@ func main() {
 		cars,
 	}
 
+	//Execute a template file by name and pass data to it!
 	err := tpl.ExecuteTemplate(os.Stdout, "tpl.gohtml", data)
 	if err != nil {
 		log.Fatalln(err)
