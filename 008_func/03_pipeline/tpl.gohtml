@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>functions</title>
 </head>
+<!-- Pipelining is templates is basically passing the results of a fuction to another function and so on. You have the "|" symbol making th demacations-->
 <body>
 
 {{.}}
@@ -12,7 +13,7 @@
 
 {{. | fdbl | fsq}}
 
-{{. | fdbl | fsq | fsqrt}}
+{{. | fdbl | fsq | fsqrt}} <!-- We keep Pipelining the results till we print the actual result we want-->
 
 </body>
 </html>

@@ -14,7 +14,7 @@ func init() {
 }
 
 func monthDayYear(t time.Time) string {
-	return t.Format("01-02-2006")
+	return t.Format("01-02-2006") //more on format here https://golang.org/pkg/time/#pkg-constants
 }
 
 var fm = template.FuncMap{
