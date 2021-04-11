@@ -19,6 +19,7 @@ func init() {
 
 func main() {
 
+	//we passed a struct as data
 	buddha := sage{
 		Name:  "Buddha",
 		Motto: "The belief of no beliefs",

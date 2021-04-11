@@ -5,6 +5,7 @@
     <title>My Peeps</title>
 </head>
 <body>
+<!-- We range over a slice but then we assign the inddex and element to a variable an use them-->
 <ul>
     {{range $index, $element := .}}
     <li>{{$index}} - {{$element}}</li>

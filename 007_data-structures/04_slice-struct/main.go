@@ -44,6 +44,7 @@ func main() {
 		Motto: "To overcome evil with good is good, to resist evil by evil is evil.",
 	}
 
+	//We passed an slice of struct
 	sages := []sage{buddha, gandhi, mlk, jesus, muhammad}
 
 	err := tpl.Execute(os.Stdout, sages)

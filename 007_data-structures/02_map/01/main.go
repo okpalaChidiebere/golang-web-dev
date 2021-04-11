@@ -16,6 +16,7 @@ func main() {
 
 	//sages := map[string]string{"India":"Gandhi", "America":"MLK", "Meditate":"Buddha", "Love":"Jesus", "Prophet":"Muhammad"}
 
+	//we pass a map as data
 	sages := map[string]string{
 		"India":    "Gandhi",
 		"America":  "MLK",

@@ -55,6 +55,14 @@ func main() {
 	sages := []sage{b, g, m}
 	cars := []car{f, c}
 
+	/*
+		The refactor here is this a more standard way to declare a struct if you
+		dont have any function attached to your  custom type.
+
+		You define the struct fields and initialize it right away
+
+		You will see this more often especially for codes that has to with templates
+	*/
 	data := struct {
 		Wisdom    []sage
 		Transport []car
