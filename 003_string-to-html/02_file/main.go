@@ -10,6 +10,7 @@ import (
 
 func main() {
 	name := "Todd McLeod"
+	//We merge data strings together using the fmt.Sprint() method
 	str := fmt.Sprint(`
 <!DOCTYPE html>
 <html lang="en">
@@ -25,11 +26,13 @@ func main() {
 </html>
 	`)
 
-	nf, err := os.Create("index.html")
+	nf, err := os.Create("index.html") //we create a file using the Create() method from the os package
+	//Error check to make sure the file is successfully created or not
 	if err != nil {
 		log.Fatal("error creating file", err)
 	}
-	defer nf.Close()
+	defer nf.Close() //close the file
 
+	//Remember io.Copy() takes in the Writer(a standard output; in our case we are writing to a file "nf") and a Reader(were you want to read from)
 	io.Copy(nf, strings.NewReader(str))
 }
