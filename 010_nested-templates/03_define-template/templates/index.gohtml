@@ -6,7 +6,8 @@
     <!-- we haven't learned to serve files yet ... -->
     <link rel="stylesheet" href="main.css">
 </head>
-<body>
+<body> <!-- Here we have a more full blow out web page we we defined reusable 
+templates like you will do in a react site for header, list, etc -->
 
 {{template "svgs"}}
 
@@ -14,6 +15,7 @@
 
 <div id="atf">
     <main>
+        <!-- we use the svg("svgs") we defined at the top -->
         <svg class="icon icon-big-in">
             <use xlink:href="#inbox"></use>
         </svg>
