@@ -38,6 +38,7 @@ func main() {
 		Admin: true,
 	}
 
+	//We will pass in a slice of users as the data for our templatess
 	users := []user{u1, u2, u3}
 
 	err := tpl.Execute(os.Stdout, users)
