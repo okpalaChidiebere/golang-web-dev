@@ -12,7 +12,7 @@ func main() {
 
 	scanner := bufio.NewScanner(strings.NewReader(s))
 
-	scanner.Split(bufio.ScanRunes)
+	scanner.Split(bufio.ScanRunes) //bufio.ScanRunes is scan function that split the sting alphabet by alphabet. You can  make your own scan function to split the string by any delimeter you want
 
 	for scanner.Scan() {
 		fmt.Printf("%s\n", scanner.Text())

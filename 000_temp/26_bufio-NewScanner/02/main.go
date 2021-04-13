@@ -12,10 +12,10 @@ func main() {
 
 	scanner := bufio.NewScanner(strings.NewReader(s))
 
-	scanner.Split(bufio.ScanWords)
+	scanner.Split(bufio.ScanWords) //We split our text on words. So we get each word in the text. If we did not cal this split method, by default, the scanner will read the text line by line instead of word by word
 
 	for scanner.Scan() {
-		fmt.Printf("%s\n", scanner.Text())
+		fmt.Printf("%s\n", scanner.Text()) //NOTE: now we call .Text() method we are not getting string passed line by line anymore because we have now changed the default to get the text word by word
 	}
 
 }
