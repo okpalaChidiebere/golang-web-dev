@@ -6,7 +6,9 @@
 </head>
 <body>
 
-<h1>{{.Name}}</h1>
+<h1>{{.Name}}</h1> <!-- Notice that the innerType "person" gets promoted to the outer type 
+"doubleZero". So we can just access the .Name directly instead of .person.Name 
+like you would do for normal go programming-->
 <h2>{{.Age}}</h2>
 {{if .LicenseToKill}}
 <h3>License To Kill</h3>
