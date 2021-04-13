@@ -10,7 +10,7 @@
 <h2>{{.Age}}</h2>
 <h3>{{.SomeProcessing}}</h3>
 <h3>{{.AgeDbl}}</h3>
-<h3>{{.Age | .TakesArg}}</h3>
-<h3>{{.AgeDbl | .TakesArg}}</h3>
+<h3>{{.Age | .TakesArg}}</h3> <!-- we get the Age filed which is an integer and pipe it to the function "TakesArg" multiplies the Age by 2 then we print the result-->
+<h3>{{.AgeDbl | .TakesArg}}</h3> <!-- "AgeDbl" is a method itself that multiplies the age filed by 2 then we pipe the result to the next function call "TakesArg" which takes the result of the first function call as argument -->
 </body>
 </html>
