@@ -1,7 +1,7 @@
 # Web Programming Synonymous Terms
 - router
 - request router
-- multiplexer
+- multiplexer: Helps makes decision about routes. A request comes in, and it makes decision on what code needs to run! This same concept is in electronics.
 - mux
 - servemux
 - server
@@ -32,7 +32,7 @@ Request
 - headers
 - optional message body
 
-Request-Line
+Request-Line must be on the format below
 - Method SP Request-URI SP HTTP-Version CRLF
 
 example request line:
@@ -223,3 +223,8 @@ save only a subset of those results that might be interesting or
 erroneous).  Spiders, for example, are typically given a start URI
 and configured to follow certain behavior while crawling the Web as a
 hypertext graph.
+
+# Summary
+- Note that there is a clients that makes requests to servers and servers response
+- Those request and response have certain structure. The structure is determined by the HyperText Protocol version you choose to use.
+- IETF puts out Requests For Comments(RFC). The rfc defines the structure to be followed for that HTTP request. For our server in this course we looked at (rfc7230)[https://tools.ietf.org/html/rfc7230] which is for HTTP/1.1. On your own you can explore the latest (rfc7450)[https://tools.ietf.org/html/rfc7540] which is for HTTP/2
