@@ -26,7 +26,7 @@ func main() {
 }
 
 func handle(conn net.Conn) {
-	err := conn.SetDeadline(time.Now().Add(10 * time.Second))
+	err := conn.SetDeadline(time.Now().Add(10 * time.Second)) //We set a timeout for the connection to just close on its own
 	if err != nil {
 		log.Fatalln("CONN TIMEOUT")
 	}
@@ -41,6 +41,6 @@ func handle(conn net.Conn) {
 
 	// now we get here
 	// the connection will time out
-	// that breaks us out of the scanner loop
+	// that breaks us out of the scanner loop after 10 seconds
 	fmt.Println("***CODE GOT HERE***")
 }
