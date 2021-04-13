@@ -55,6 +55,7 @@ func mux(conn net.Conn, ln string) {
 	fmt.Println("***URI", u)
 
 	// multiplexer
+	//Rememebr multiplexer bascially help makes decisions on which block of code to run depending on the request
 	if m == "GET" && u == "/" {
 		index(conn)
 	}
