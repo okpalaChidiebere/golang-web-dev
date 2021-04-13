@@ -1,3 +1,12 @@
+# REMINDER
+- This concept of HTTP running on top TCP is really important.
+- This means to create an HTTP server(Server which responds to HTTP requests), we have to create a TCP server that handles requests formatted in a certain way. This is because when a request comes in, the request is just text, and the text is formatted in a certain way adhering to the Hypertext transfer Protocol then our server will be able to process that text.
+- Protocol are rules or standard of communication. This Protocol are written in RFCs (7230 for this project). Remember that the RFC(Request For Comments) are documents put out by the IETF(Internet Engineering Task Force). These documents basically says here are the standards we adhere to when we do HTTP stuff!
+
+The Net package in golang allows us to do things on the Network like create serves and do things on the TCP network
+
+In addition, we have the http package in golang which is built on top of the net package. No surprise here :)
+
 # HTTP Server
 
 HTTP uses TCP.
