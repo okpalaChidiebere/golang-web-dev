@@ -5,6 +5,15 @@
 [http.Handler](https://godoc.org/net/http#Handler)
 ``` Go
 type Handler interface {
+    /*Any type that implicitly implements this method (eg look at /01_Handler) is also going to be a Handler
+    
+    This Handler is going to be used in different places in our code and be used in different ways
+    Any method that asks for a Handler type as argument, we can pass any time that implements the Handler interface into there and our code will be fine!
+
+    This handler takes in two arguments
+    - first: ResponseWriter
+    - second: a pointer to a request
+    */
     ServeHTTP(ResponseWriter, *Request)
 }
 ```
@@ -20,7 +29,7 @@ func ListenAndServe(addr string, handler Handler) error
 
 [http.ListenAndServeTLS](https://godoc.org/net/http#ListenAndServeTLS)
 ``` Go
-func ListenAndServeTLS(addr, certFile, keyFile string, handler Handler) error
+func ListenAndServeTLS(addr, certFile, keyFile string, handler Handler) error //for serving https request. TLS is the new SSL. SSL is old. 
 ```
 
 *Notice that both of the above functions take a handler*
