@@ -28,8 +28,8 @@ func main() {
 func handle(conn net.Conn) {
 	scanner := bufio.NewScanner(conn)
 	for scanner.Scan() {
-		ln := strings.ToLower(scanner.Text())
-		bs := []byte(ln)
+		ln := strings.ToLower(scanner.Text()) //make sure all letters are lower case so that we can easily compare the ASCII value
+		bs := []byte(ln)                      //convert the text into bytes
 		r := rot13(bs)
 
 		fmt.Fprintf(conn, "%s - %s\n\n", ln, r)
