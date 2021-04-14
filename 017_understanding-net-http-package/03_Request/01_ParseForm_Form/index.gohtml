@@ -6,7 +6,8 @@
 </head>
 <body>
 
-
+<!-- If there is data(ie looking at the main.go, we passed the form data sumbitted back to this template to get it printed), 
+we show this code-->
 {{if .}}
 <main>
     <p><strong>variable names</strong> (identifiers) and <em>values</em>:</p>
@@ -16,8 +17,13 @@
     {{end}}
 </main>
 {{end}}
+<!-- End if -->
 
+<!-- If you want the form to submit or send through the body of the request( sometimes called  payload), you use the POST
+If you want the form to submit or send through the url, then you can use the GET method. The data will be appended to the url like a queryString
 
+Most of the time we use POST
+-->
 <form action="/?fname=James" method="POST">
         <input type="text" name="fname" placeholder="first name" autofocus autocomplete="off">
         <input type="submit" name="submit-btn" value="onda button">
