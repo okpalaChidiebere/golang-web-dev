@@ -16,12 +16,19 @@ func (m hotdog) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 
 	data := struct {
+		/*
+			We define our own type and the fields that we are getting from the req
+			struct that is returned
+
+			No magic here the filed types have to be of thesame type as returned by the Request
+			Eg *url.URL in our struct is also thesame in the req struct*/
 		Method      string
 		URL         *url.URL
 		Submissions url.Values
 	}{
+		//We then initialze these fields
 		req.Method,
-		req.URL,
+		req.URL, //We get the URL or path field from the req struct returned
 		req.Form,
 	}
 	tpl.ExecuteTemplate(w, "index.gohtml", data)

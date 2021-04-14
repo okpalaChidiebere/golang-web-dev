@@ -12,6 +12,8 @@
     {{if .ContentLength}}<p>The request ContentLength: {{.ContentLength}}</p>{{end}}
 
     {{if .URL}}<p>The request URL:</p>
+    <!-- The pointer to URL is a struct. So all the filed you see down here are in the URL struct
+    https://golang.org/pkg/net/url/#URL-->
     <ul>
         <li>Scheme: {{.URL.Scheme}}</li>
         <li>Opaque: {{.URL.Opaque}}</li>
@@ -24,11 +26,12 @@
     </ul>
     {{end}}
 
-
+    <!-- Header is of type map[string][]string
+     So we basically print the key and then range over the values -->
     {{if .Header}}
         {{range $k, $v := .Header}}
-            <p>{{$k}}</p>
-            <ul>
+            <p>{{$k}}</p> <!-- print the key-->
+            <ul><!-- Range over the value-->
             {{range $v}}
                 <li>{{.}}</li>
             {{end}}
@@ -36,6 +39,8 @@
         {{end}}
     {{end}}
 
+    <!-- Form submissions is of type map[string][]string again
+     So we basically print the key and then range over the values -->
     {{if .Submissions}}<p><strong>variable names</strong> (identifiers) and <em>values</em>:</p>
         {{range $key, $value := .Submissions}}
                 <p><strong>{{$key}}</strong></p>

@@ -18,13 +18,13 @@ func (m hotdog) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	data := struct {
 		Method      string
 		URL         *url.URL
-		Submissions map[string][]string
-		Header      http.Header
+		Submissions map[string][]string //instead of us using url.Values for the type which is thesame we just wrote the basic type representation. Cool stuff
+		Header      http.Header         //the header field
 	}{
 		req.Method,
 		req.URL,
 		req.Form,
-		req.Header,
+		req.Header, //this is how we get the Header from a Request
 	}
 	tpl.ExecuteTemplate(w, "index.gohtml", data)
 }

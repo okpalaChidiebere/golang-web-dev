@@ -21,14 +21,14 @@ func (m hotdog) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		Submissions   map[string][]string
 		Header        http.Header
 		Host          string
-		ContentLength int64
+		ContentLength int64 //define the field for the content length
 	}{
 		req.Method,
 		req.URL,
 		req.Form,
 		req.Header,
 		req.Host,
-		req.ContentLength,
+		req.ContentLength, //how we get the content length
 	}
 	tpl.ExecuteTemplate(w, "index.gohtml", data)
 }

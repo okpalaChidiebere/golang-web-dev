@@ -15,12 +15,12 @@ func (m hotdog) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		log.Fatalln(err)
 	}
 
-	data := struct {
+	data := struct { //we declare the fields and type of data those field will store
 		Method      string
 		Submissions url.Values
 	}{
-		req.Method,
-		req.Form,
+		req.Method, //we get the Method from our Request coming in
+		req.Form,   //We are able to use req.Form here because we already called ParseFrom() on our req variable to get the forl field
 	}
 	tpl.ExecuteTemplate(w, "index.gohtml", data)
 }
