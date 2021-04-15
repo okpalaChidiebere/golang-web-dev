@@ -1,6 +1,7 @@
 # Third-party ServeMux
 
-You can search [godoc.org](https://godoc.org/) for third-party packages.
+You can search [pkg.go.dev](https://pkg.go.dev/) for third-party packages. You can search for standard packages or third party packages as well. The more poprpular third party packages will have more imports
+
 
 Here is [a good third-party ServeMux](https://godoc.org/github.com/julienschmidt/httprouter) that allows easy access to methods for routing & path parameters.
 
