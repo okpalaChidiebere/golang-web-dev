@@ -36,3 +36,32 @@ ListenAndServer() method takes in a Handler. This ListenAndServer allow your ser
 Next we will understand the type ServerMux. When you have a pointer to a mux, it is also of type Handler. Therefore we can pass the ServerMux to the ListenAndServer() method
 ServerMux allows us to set our route and resposnses to those routes as well
 
+# 018 - 022
+
+Routing or Multiplexing
+
+We will create a Multiplexer to respond to different request in different ways. 
+
+We want to answer the question when people make request to our server at different path or url, how do we want to respond to those different urls and server different code for each of those urls?
+
+We look at examples from the Least Elegant to the Best way to set up your Multiplexer
+
+Three ways to make a multiplexer for your code
+- by using a NewServeMux() method. This creates a mux that gives us a pointer to a ServeMux which has several methods attached to it. ServeHTTP is one of the methods. This means our mux is a Handler that we can pas to ListenAndServe(). Handle method is attached to it as well which allows us to pass in a route and Handler
+- by using a DefaultServeMux where we pass in nil to the ListenAndserve. We use Handle(check out 020_HandleFunc) and HandleFunc (check out 020_HandleFunc) to attach routes to the DefaultServeMux. They are both http(net/http) package level methods
+- by using third library packages. The third party library we explored was julius schmidt
+
+
+https://pkg.go.dev/ is where you can search for standard packages or third party packages as well. The more popular third party packages will have more imports
+
+FEW FYIs
+- When you see http.ListenAndServe(":8080", nil) know that we are using the default multiplexer 
+- When you see http.ListenAndServe(":8080", mux) know that someone created their own multiplexer. Probably using the NewServeMux() method like we have seen
+
+****
+The Entry point of understanding the net/http package is:
+- type Handler which is an interface that has the ServeHTTP() method with a ResponseWriter and a Pointer to a Request (017)
+- ListenAndServer takes a Handler (017)
+- Next thing we want to do in our server is routing. The way we do Routing is with a Multiplexer(ServerMux). (018 - 022)
+
+022 is more of Hands On Exercies. The Code in there dont have much comments. like the class lessons
