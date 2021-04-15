@@ -15,6 +15,7 @@ func c(res http.ResponseWriter, req *http.Request) {
 
 func main() {
 
+	//HandleFunc method wants a router and a function that has ResponseWriter and Pointer to a Request as its argument
 	http.HandleFunc("/dog", d)
 	http.HandleFunc("/cat", c)
 

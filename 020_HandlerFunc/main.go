@@ -15,6 +15,12 @@ func c(res http.ResponseWriter, req *http.Request) {
 
 func main() {
 
+	/*
+		Handle wants a route and a Handler. We know HandlerFunc implements the Handler interface (which the Handle() method wants) because it has the ServerHTTP method attached to it; but d is just a function but it matches the underlying type for a HandlerFunc type.
+		So we use type conversion to convert the d which is just a function to HandlerFunc.
+
+		https://golang.org/pkg/net/http/#HandlerFunc
+	*/
 	http.Handle("/dog", http.HandlerFunc(d))
 	http.Handle("/cat", http.HandlerFunc(c))
 
