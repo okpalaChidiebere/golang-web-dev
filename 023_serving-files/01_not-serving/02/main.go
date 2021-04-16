@@ -17,5 +17,5 @@ func dog(w http.ResponseWriter, req *http.Request) {
 	io.WriteString(w, `
 	<!--image doesn't serve-->
 	<img src="/toby.jpg">
-	`)
+	`) //This image "toby.jpg" will not server yet because we dont have a route for this image. We expect this image to be in our server
 }

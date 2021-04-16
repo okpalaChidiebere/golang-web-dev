@@ -17,5 +17,5 @@ func dog(w http.ResponseWriter, req *http.Request) {
 	io.WriteString(w, `
 	<!--not serving from our server-->
 	<img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Golde33443.jpg">
-	`)
+	`) //Here we are serving an image from another server in our website
 }
