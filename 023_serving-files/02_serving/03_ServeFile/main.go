@@ -17,5 +17,6 @@ func dog(w http.ResponseWriter, req *http.Request) {
 }
 
 func dogPic(w http.ResponseWriter, req *http.Request) {
+	/*ServeFile is more easier to use than ServeCOntent*/
 	http.ServeFile(w, req, "toby.jpg")
 }
