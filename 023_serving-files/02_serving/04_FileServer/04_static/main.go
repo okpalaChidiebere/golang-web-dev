@@ -6,6 +6,14 @@ import (
 )
 
 func main() {
+	/*
+		http.ListenAndServe returns an error value
+
+		if ListenAndServe fails and throws an error, that error gets returned, main will exit and our program will be done.
+
+		However, ideally, we wil want to catch that error and log it.
+		So log.Fatal accepts any type (represented like ...interface{}) as argument and prints out
+	*/
 	log.Fatal(http.ListenAndServe(":8080", http.FileServer(http.Dir("."))))
 }
 

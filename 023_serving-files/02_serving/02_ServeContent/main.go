@@ -21,6 +21,10 @@ func dog(w http.ResponseWriter, req *http.Request) {
 func dogPic(w http.ResponseWriter, req *http.Request) {
 	f, err := os.Open("toby.jpg") //we open the file as usual
 	if err != nil {
+		/* A lot of the time perople will use a constant in place for the third argument
+		https://golang.org/pkg/net/http/#pkg-constants
+		Eg isnatead of hard coding the status code our self like 404, we will use http.StatusNotFound
+		*/
 		http.Error(w, "file not found", 404)
 		return
 	}
