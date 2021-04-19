@@ -65,3 +65,18 @@ The Entry point of understanding the net/http package is:
 - Next thing we want to do in our server is routing. The way we do Routing is with a Multiplexer(ServerMux). (018 - 022)
 
 022 is more of Hands On Exercies. The Code in there dont have much comments. like the class lessons
+
+# 023 - 025
+
+We saw some other functions that we can use to server files like http.ServeContent, http.ServeFile, io.Copy. These are just for so that i am aware of them and what they do. But most of the time for real projects you may not need them.
+
+In practise, for most of the time, we use http.FileServer as handler for serving files(espacially if its a static website) or http.StripPrefix as handler for serving files stored in a particular directory espacially for exposing those files ou are serving from a single route in your server
+
+We learned about http.FileServer which allows us to serve a whole directory and also stripping the prefix to take care of routing stuff with the help of http.StripPrefix. So we can specify a certain directory and have certain control over what is asked for and where we serve it from. This is important becasie we want to be able to just serve the assets. We don't want our go code to be served up like the FileServer does. 
+Inside the assets we will have css, javascript, images. In addition you may have templates which will be in a folder called templates
+
+We learned how to serve a static website. The idea here is we can take a static website make with react, vue, etc and put it up somewhere and it is running with go. 
+
+We saw how log.fatal & http.Error works
+
+We learned the http.notFoundHandler for handling favicon.ico requests
