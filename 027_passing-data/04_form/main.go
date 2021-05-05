@@ -28,7 +28,7 @@ func foo(w http.ResponseWriter, req *http.Request) {
 
 	f := req.FormValue("first")
 	l := req.FormValue("last")
-	s := req.FormValue("subscribe") == "on"
+	s := req.FormValue("subscribe") == "on" //s stores a bool value. If the checkButton is checked, s will be true and viceversa
 
 	err := tpl.ExecuteTemplate(w, "index.gohtml", person{f, l, s})
 	if err != nil {
