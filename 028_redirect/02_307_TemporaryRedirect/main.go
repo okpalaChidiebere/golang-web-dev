@@ -34,3 +34,14 @@ func barred(w http.ResponseWriter, req *http.Request) {
 	fmt.Println("Your request method at barred:", req.Method)
 	tpl.ExecuteTemplate(w, "index.gohtml", nil)
 }
+
+/*
+In summary
+
+TemporaryRedirect keeps the METHOD thesame. If a POST request comes in, the redirect will also be a POST
+
+Request at foo '/' will be GET because its the home page
+Request method for barried is GET (we make a request to load the form page)
+Request method for bar will be POST (this does the form processiong and redirected with 303 which changes the method to GET)
+Request method for foo will be POST (we redirected our server to this path)
+*/

@@ -26,7 +26,15 @@ func foo(w http.ResponseWriter, req *http.Request) {
 
 func bar(w http.ResponseWriter, req *http.Request) {
 	fmt.Println("Your request method at bar:", req.Method)
+
 	// process form submission here
+
+	/*
+		Another way to ue the seeOther status code. Here we did not explicitly
+		set the location in the header like we did at /04_WriteHeader
+
+		We use the Redirect method from the net/http package
+	*/
 	http.Redirect(w, req, "/", http.StatusSeeOther)
 }
 
