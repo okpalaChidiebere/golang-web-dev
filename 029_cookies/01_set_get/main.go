@@ -6,17 +6,18 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", set)
+	http.HandleFunc("/", set) //at our default route, we run the set() method where we set a cookie
 	http.HandleFunc("/read", read)
 	http.Handle("/favicon.ico", http.NotFoundHandler())
 	http.ListenAndServe(":8080", nil)
 }
 
 func set(w http.ResponseWriter, req *http.Request) {
+	//We set initalize the cookie in a composite literal way
 	http.SetCookie(w, &http.Cookie{
 		Name:  "my-cookie",
 		Value: "some value",
-		Path: "/",
+		Path:  "/",
 	})
 	fmt.Fprintln(w, "COOKIE WRITTEN - CHECK YOUR BROWSER")
 	fmt.Fprintln(w, "in chrome go to: dev tools / application / cookies")
@@ -24,11 +25,11 @@ func set(w http.ResponseWriter, req *http.Request) {
 
 func read(w http.ResponseWriter, req *http.Request) {
 
-	c, err := req.Cookie("my-cookie")
+	c, err := req.Cookie("my-cookie") //we call the Cookie() method on a request whuch returns a pointer to a cookie
 	if err != nil {
 		http.Error(w, http.StatusText(400), http.StatusBadRequest)
 		return
 	}
 
-	fmt.Fprintln(w, "YOUR COOKIE:", c)
+	fmt.Fprintln(w, "YOUR COOKIE:", c) //we just print out the cookie value in the browser
 }
