@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/satori/go.uuid"
-	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type user struct {
@@ -133,12 +133,12 @@ func logout(w http.ResponseWriter, req *http.Request) {
 	}
 	c, _ := req.Cookie("session")
 	// delete the session
-	delete(dbSessions, c.Value)
+	delete(dbSessions, c.Value) //we delete the session from the dbSessions table
 	// remove the cookie
 	c = &http.Cookie{
 		Name:   "session",
 		Value:  "",
-		MaxAge: -1,
+		MaxAge: -1, //when we set the cookie value to be < 0, it means delete the cookie now! https://golang.org/pkg/net/http/#Cookie
 	}
 	http.SetCookie(w, c)
 
