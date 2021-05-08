@@ -2,11 +2,16 @@ package main
 
 import (
 	"fmt"
-	"github.com/satori/go.uuid"
 	"net/http"
 	"time"
+
+	uuid "github.com/satori/go.uuid"
 )
 
+/*
+Another way of expiring a session is to set the cookie maxAge each time a
+request to every endpoint is made
+*/
 func getUser(w http.ResponseWriter, req *http.Request) user {
 	// get cookie
 	c, err := req.Cookie("session")
@@ -18,6 +23,10 @@ func getUser(w http.ResponseWriter, req *http.Request) user {
 		}
 
 	}
+	/*
+	 This is where we set the maxAge for the cookie. We are setting it here outside the line 20 because
+	 we want this maxAge to be set everytime and not only to when the cookie ia sbeing created
+	*/
 	c.MaxAge = sessionLength
 	http.SetCookie(w, c)
 
@@ -51,7 +60,9 @@ func alreadyLoggedIn(w http.ResponseWriter, req *http.Request) bool {
 func cleanSessions() {
 	fmt.Println("BEFORE CLEAN") // for demonstration purposes
 	showSessions()              // for demonstration purposes
+	//We range through the sessions
 	for k, v := range dbSessions {
+		//If time.Now substract the lastactivity is greater than 30 seconds, we delete the user session
 		if time.Now().Sub(v.lastActivity) > (time.Second * 30) {
 			delete(dbSessions, k)
 		}

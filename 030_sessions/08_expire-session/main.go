@@ -1,11 +1,13 @@
 package main
 
 import (
-	"github.com/satori/go.uuid"
-	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 type user struct {
@@ -18,15 +20,15 @@ type user struct {
 
 type session struct {
 	un           string
-	lastActivity time.Time
+	lastActivity time.Time //we now store the time as well
 }
 
 var tpl *template.Template
 var dbUsers = map[string]user{}       // user ID, user
-var dbSessions = map[string]session{} // session ID, session
+var dbSessions = map[string]session{} // session ID, session.  We use to store just username here. But now we store username and the lastactive time as well
 var dbSessionsCleaned time.Time
 
-const sessionLength int = 30
+const sessionLength int = 30 //FYI, you can use the time.duration here instead of an int eg time.Second * 30 will give us 30s https://golang.org/pkg/time/#Duration
 
 func init() {
 	tpl = template.Must(template.ParseGlob("templates/*"))
@@ -90,7 +92,7 @@ func signup(w http.ResponseWriter, req *http.Request) {
 		}
 		c.MaxAge = sessionLength
 		http.SetCookie(w, c)
-		dbSessions[c.Value] = session{un, time.Now()}
+		dbSessions[c.Value] = session{un, time.Now()} //now, instead of just storing the username like in prevoius lessions, we store a struct that contains the unsername and the time they logged in
 		// store user in dbUsers
 		bs, err := bcrypt.GenerateFromPassword([]byte(p), bcrypt.MinCost)
 		if err != nil {
@@ -137,7 +139,7 @@ func login(w http.ResponseWriter, req *http.Request) {
 		}
 		c.MaxAge = sessionLength
 		http.SetCookie(w, c)
-		dbSessions[c.Value] = session{un, time.Now()}
+		dbSessions[c.Value] = session{un, time.Now()} //we uodate the db session in the login as well
 		http.Redirect(w, req, "/", http.StatusSeeOther)
 		return
 	}
@@ -145,6 +147,9 @@ func login(w http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(w, "login.gohtml", u)
 }
 
+/*
+  Each time we logout, we clean out sessions that are expired
+*/
 func logout(w http.ResponseWriter, req *http.Request) {
 	if !alreadyLoggedIn(w, req) {
 		http.Redirect(w, req, "/", http.StatusSeeOther)
@@ -162,6 +167,9 @@ func logout(w http.ResponseWriter, req *http.Request) {
 	http.SetCookie(w, c)
 
 	// clean up dbSessions
+	/*
+		You may not have a scenario like this in Prod, but you wil encounter time where you may want to go clean up your sessions
+	*/
 	if time.Now().Sub(dbSessionsCleaned) > (time.Second * 30) {
 		go cleanSessions()
 	}
