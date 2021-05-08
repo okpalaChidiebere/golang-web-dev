@@ -35,6 +35,7 @@ func index(w http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(w, "index.gohtml", u)
 }
 
+/*The endpoint /bar is only accessible if you are logged in*/
 func bar(w http.ResponseWriter, req *http.Request) {
 	u := getUser(req)
 	if !alreadyLoggedIn(req) {
@@ -46,6 +47,7 @@ func bar(w http.ResponseWriter, req *http.Request) {
 
 func signup(w http.ResponseWriter, req *http.Request) {
 	if alreadyLoggedIn(req) {
+		//If the user is aleady loggd in, they dont need to sign up!
 		http.Redirect(w, req, "/", http.StatusSeeOther)
 		return
 	}
@@ -67,16 +69,16 @@ func signup(w http.ResponseWriter, req *http.Request) {
 
 		// create session
 		sID, _ := uuid.NewV4()
-		c := &http.Cookie{
+		c := &http.Cookie{ //create a cookie
 			Name:  "session",
 			Value: sID.String(),
 		}
-		http.SetCookie(w, c)
-		dbSessions[c.Value] = un
+		http.SetCookie(w, c)     //set the cookie in the user machine
+		dbSessions[c.Value] = un //store the user session; assoiate the sessionID(key) with the username(value)
 
 		// store user in dbUsers
 		u := user{un, p, f, l}
-		dbUsers[un] = u
+		dbUsers[un] = u //store the newly created user
 
 		// redirect
 		http.Redirect(w, req, "/", http.StatusSeeOther)
