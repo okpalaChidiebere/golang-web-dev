@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/satori/go.uuid"
-	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
+
+	uuid "github.com/satori/go.uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type user struct {
@@ -18,6 +19,9 @@ var tpl *template.Template
 var dbUsers = map[string]user{}      // user ID, user
 var dbSessions = map[string]string{} // session ID, user ID
 
+/*
+In this init function, we are writing a code, to assume a user has already singed up! :)
+*/
 func init() {
 	tpl = template.Must(template.ParseGlob("templates/*"))
 	bs, _ := bcrypt.GenerateFromPassword([]byte("password"), bcrypt.MinCost)
@@ -48,6 +52,7 @@ func bar(w http.ResponseWriter, req *http.Request) {
 }
 
 func signup(w http.ResponseWriter, req *http.Request) {
+	//if the user is already logged in, we redirect the user to the default page
 	if alreadyLoggedIn(req) {
 		http.Redirect(w, req, "/", http.StatusSeeOther)
 		return
@@ -96,11 +101,12 @@ func login(w http.ResponseWriter, req *http.Request) {
 
 	// process form submission
 	if req.Method == http.MethodPost {
+		/*  we retrieve the username and password */
 		un := req.FormValue("username")
 		p := req.FormValue("password")
 		// is there a username?
 		u, ok := dbUsers[un]
-		if !ok {
+		if !ok { // if the username inputed does not exist, we return an error
 			http.Error(w, "Username and/or password do not match", http.StatusForbidden)
 			return
 		}
@@ -111,6 +117,7 @@ func login(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		// create session
+		//If there go to this point without being re-directed to somewhere else, then the user can login. So we create a session for the user
 		sID, _ := uuid.NewV4()
 		c := &http.Cookie{
 			Name:  "session",
