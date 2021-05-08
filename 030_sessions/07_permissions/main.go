@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/satori/go.uuid"
-	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
+
+	uuid "github.com/satori/go.uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type user struct {
@@ -12,7 +13,7 @@ type user struct {
 	Password []byte
 	First    string
 	Last     string
-	Role     string
+	Role     string //we added a new attribute to store the role assigned to a user
 }
 
 var tpl *template.Template
@@ -38,12 +39,14 @@ func index(w http.ResponseWriter, req *http.Request) {
 	tpl.ExecuteTemplate(w, "index.gohtml", u)
 }
 
+/*This page is only accessed to logged in user with role "007"*/
 func bar(w http.ResponseWriter, req *http.Request) {
 	u := getUser(w, req)
 	if !alreadyLoggedIn(req) {
 		http.Redirect(w, req, "/", http.StatusSeeOther)
 		return
 	}
+	//Here we check for the role!
 	if u.Role != "007" {
 		http.Error(w, "You must be 007 to enter the bar", http.StatusForbidden)
 		return
@@ -64,7 +67,7 @@ func signup(w http.ResponseWriter, req *http.Request) {
 		p := req.FormValue("password")
 		f := req.FormValue("firstname")
 		l := req.FormValue("lastname")
-		r := req.FormValue("role")
+		r := req.FormValue("role") //we get the role of the user submitted by the form request. Obvously in real app, you dont let usrs choos e their role
 		// username taken?
 		if _, ok := dbUsers[un]; ok {
 			http.Error(w, "Username already taken", http.StatusForbidden)
