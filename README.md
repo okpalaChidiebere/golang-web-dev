@@ -80,3 +80,37 @@ We learned how to serve a static website. The idea here is we can take a static 
 We saw how log.fatal & http.Error works
 
 We learned the http.notFoundHandler for handling favicon.ico requests
+
+# 027 - 030
+
+We saw two ways of managing state for your application
+- One to maintain state is to pass a unique id value each time to the url of a page so that we can know who the user is each time. You probably will go with this option, if the user dont allow you to write cookies to their browser
+- Another way is to use cookies and sessions
+
+State is a persistent awareness of who is communicating with the server. For example, when someone logs in, the server knows who is logged and know if they have access to certain information or not.
+
+Sessions are basically where someone can log in, do stuff with authorized access credentials to certain areas, and then they can finally logout.  
+
+We learned AGAIN how to pass form data values through the url or request body
+
+We will learn how to write cookie(s) to the client's browser and also how to read cookies that are sent from the client to the server.
+
+While learning cookies, we understood how redirects works as well
+We the client sends a request to the server to get a resource at a location though a URL, the server can choose to redirect that request to another location. Maybe because, that resource is moved to another location or maybe the server does some processing at that location and then redirects the request to another location (like you send a POST request on form submit, it gets processed in a location and then the user will not be send to another location to show the success page)
+
+** How session works **
+Clients makes request to the server, and we want the client to send a unique identifier (sessionID) to that server. In our server, we could associated that SessionID to a UserID (we have a table that stores a sessionID for every userID). Then we can now take the userID and get anything we want about the user. We could store that Unique ID(sessionID) in a cookie and knowing that cookie are domain specific, whenever the client send a request to our server, if there is a our cookie on their browser, they will send that cookie as well. Then our server can grab that value and we can uniquely identify them. 
+
+The SessionID are stored and deleted as the user logs in and out from our server. But the UserID and other information is always there in our DB table
+
+To Logout the user we delete/expire their cookie and then delete their session entry from the session table!
+
+To add permissions in our server, we just added an extra Role attribute to a user struct. Then in any of the functions that need to run only based on role, we check if the user role is equal to some certain value
+
+Expiring a session
+This means after some amount certain time of inactivity, you have not clicked on any links for a certain amount of time within the website, then it will log you out automatically
+- One way to expire a session is to set the maxAge on the cookie to a certain value in seconds. Eg We basically set 10 minutes on their cookie, this mean they have just 10 minutes to click on a link, otherwise we log them out
+- Another way is to keep track of each session on the server(db) and when was the last time of each activity. So occasionally we will go through the table and clean up the sessions that has not been active in the past 10 mins
+
+IN ADDITION ( 030_session/09_middleware)
+You can check out how Middleware works on our server. We can use middleware to check for authorization on an enpoint before it gets executed
