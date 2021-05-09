@@ -5,9 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"golang.org/x/crypto/bcrypt"
-
 	uuid "github.com/satori/go.uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type user struct {
@@ -42,7 +41,7 @@ func main() {
 	http.HandleFunc("/login", login)
 	http.HandleFunc("/logout", logout)
 	http.Handle("/favicon.ico", http.NotFoundHandler())
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":80", nil)
 }
 
 func index(w http.ResponseWriter, req *http.Request) {
@@ -85,10 +84,12 @@ func signup(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		// create session
-		sID, _ := uuid.NewV4()
+		sID := uuid.Must(uuid.NewV4(), nil).String()
+		//sID, _ := uuid.NewV4()
 		c := &http.Cookie{
-			Name:  "session",
-			Value: sID.String(),
+			Name: "session",
+			//Value: sID.String(),
+			Value: sID,
 		}
 		c.MaxAge = sessionLength
 		http.SetCookie(w, c)
@@ -132,10 +133,12 @@ func login(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		// create session
-		sID, _ := uuid.NewV4()
+		//sID, _ := uuid.NewV4()
+		sID := uuid.Must(uuid.NewV4(), nil).String()
 		c := &http.Cookie{
-			Name:  "session",
-			Value: sID.String(),
+			Name: "session",
+			//Value: sID.String(),
+			Value: sID,
 		}
 		c.MaxAge = sessionLength
 		http.SetCookie(w, c)
@@ -169,8 +172,10 @@ func logout(w http.ResponseWriter, req *http.Request) {
 	// clean up dbSessions
 	/*
 		You may not have a scenario like this in Prod, but you wil encounter time where you may want to go clean up your sessions
+
+		//More on time.Since() https://stackoverflow.com/questions/23838857/how-to-get-hours-difference-between-two-dates
 	*/
-	if time.Now().Sub(dbSessionsCleaned) > (time.Second * 30) {
+	if time.Since(dbSessionsCleaned) > (time.Second * 30) {
 		go cleanSessions()
 	}
 
