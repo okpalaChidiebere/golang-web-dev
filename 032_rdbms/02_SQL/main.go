@@ -3,16 +3,17 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"io"
 	"net/http"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 var db *sql.DB
 var err error
 
 func main() {
-	db, err = sql.Open("mysql", "awsuser:mypassword@tcp(mydbinstance.cakwl95bxza0.us-west-1.rds.amazonaws.com:3306)/test02?charset=utf8")
+	db, err = sql.Open("mysql", "udemyokpaladev:mypassword@tcp(udemyokpaladev.cqwxwfcdjrrt.ca-central-1.rds.amazonaws.com:3306)/test02?charset=utf8")
 	check(err)
 	defer db.Close()
 
@@ -38,7 +39,7 @@ func index(w http.ResponseWriter, req *http.Request) {
 }
 
 func amigos(w http.ResponseWriter, req *http.Request) {
-	rows, err := db.Query(`SELECT aName FROM amigos;`)
+	rows, err := db.Query(`SELECT aName FROM amigos;`) //notice here we have the SQL query to get all records
 	check(err)
 	defer rows.Close()
 
@@ -47,8 +48,15 @@ func amigos(w http.ResponseWriter, req *http.Request) {
 	s = "RETRIEVED RECORDS:\n"
 
 	// query
+	/*
+		Looking at the documentation https://golang.org/pkg/database/sql/#Rows.Next
+		Next() method returns true on success or false if there are no more rows!
+
+		So while its true, it will keep looping until it eventually becomes false which
+		means we are done extracting all our rows!
+	*/
 	for rows.Next() {
-		err = rows.Scan(&name)
+		err = rows.Scan(&name) //We pass the address of our variable name by using the & so that Scan() can write each row data to it
 		check(err)
 		s += name + "\n"
 	}
@@ -57,16 +65,21 @@ func amigos(w http.ResponseWriter, req *http.Request) {
 
 func create(w http.ResponseWriter, req *http.Request) {
 
-	stmt, err := db.Prepare(`CREATE TABLE customer (name VARCHAR(20));`)
+	stmt, err := db.Prepare(`CREATE TABLE customer (name VARCHAR(20));`) //Prepare() method gives us an sql statement
 	check(err)
 	defer stmt.Close()
 
-	r, err := stmt.Exec()
+	r, err := stmt.Exec() //we execute the statement
 	check(err)
 
-	n, err := r.RowsAffected()
+	n, err := r.RowsAffected() //we get how many number of rows affected from the statement excecution
 	check(err)
 
+	/*
+		we printed out the number of rows affected. In our case it will be 0 because
+		we are just creating a table. If we were performing an INSERT or DELETE operation
+		the number might be more than one
+	*/
 	fmt.Fprintln(w, "CREATED TABLE customer", n)
 }
 
