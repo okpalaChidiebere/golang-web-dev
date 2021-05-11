@@ -26,6 +26,18 @@
   - refresh your browser to see the switching between web-servers-sg
 
 
+We continued from the demo of the /02_load-balacer
+
+
+We created a machine image of our server and use the image to create another instance and make it available in another zone(first server available at ca-central-1a, the other available at ca-central-1b. You change that from the subnet select option at STEP 3 of launching your instance). We added the new EC2 instance from image to the list(the list is called "Target Groups") of instances the loadbalancer can route traffic to. we now got both the EC2 server and the EC2 server that was from the image running as well. Then we observed the Load balancer switching between the two servers.
+
+** To create an image from an exsiting instance, click into the "instances" page. First select(from check button) the instance you want to create an image from,  you will see an button called "Actions" right beside the "launch instance" button. Click on the button, then select "images and templates" -> "create iamge"
+To confirm the image to to the "AMIs" page under the Images section at the left side nav. You will see the status of the iamge you requested to be created for you by amazon
+** REMEMBER to make the instance not publicly avaliable and to be only available through the LoadBalancer, you have to add the security gropup you configured with the correct inboud connection settings to this instance. You do this at STEP 6 **
+
+The way we can confirm it is correctly switching between the two, was if you remember we had an empoint "/instance" which returns the instance id. We could see that sometimes when we refresh the pahe, the number changes! when our client web browser sends a request the traffic goes to the Amzon image instace(AMI) which returns a different id or the other instance that was not created from an image!
+
+
 
 
 

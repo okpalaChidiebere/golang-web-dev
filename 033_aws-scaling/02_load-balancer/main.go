@@ -22,7 +22,7 @@ func ping(w http.ResponseWriter, req *http.Request) {
 }
 
 func instance(w http.ResponseWriter, req *http.Request) {
-	resp, err := http.Get("http://169.254.169.254/latest/meta-data/instance-id")
+	resp, err := http.Get("http://169.254.169.254/latest/meta-data/instance-id") //this endpoint is a way to get the EC2 instance id that your code is running on
 	if err != nil {
 		fmt.Println(err)
 		return

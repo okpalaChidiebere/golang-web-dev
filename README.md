@@ -114,3 +114,48 @@ This means after some amount certain time of inactivity, you have not clicked on
 
 IN ADDITION ( 030_session/09_middleware)
 You can check out how Middleware works on our server. We can use middleware to check for authorization on an enpoint before it gets executed
+
+
+# 031 - 032
+
+At 031 we learned how to connect our Go works with SQL. We provisioned a RDS(MYSQL server) at AWS, made it open to public. We had to open the the DB to public so that we can connect to the DB in our code locally. This also made it easy for us to connect to the DB through the MYSQL work bench from just standard TCP/IP connection which was ok just for testing. For your real company Prod or Dev environment, you dont your database that public
+
+
+
+032 we learned more about AWS. 
+- We learned how to create instances and how to assign security group configuration to it to make them not accessible to the public as well as and how to use key pairs
+- We learned how to create a machine image from an existing instance. The existing machine is usually the good instance we created ourself that we are sure is working fine.
+- We saw how to use security groups for EC2s and RDS machines
+- We learned how to use create Load balancer with target groups for that load balancer
+- We learned Auto scaling. Auto scaling basically helps us scale horizontally. We set rules like if our current server is using 75% percent of its capacity spin up more servers to help with load or if the server is using 50% less of its capacity, then start to drop servers because there is no work!
+- We learned how to use CloudFront on Ec2s by selecting the loadbalancer "origin domain name" if you have your Ec2 to be only accessed through the loadbalancer in the CF console. Basically with CloudFront, you server will be available in every region! You can confirm this works because when you go to the CloudFront console, the button where you select your region will be disabled because cloudFront does not require region selection. So when someone makes a request, it answers that request with the server closest to them. 
+- Lastly know about AWS Rout53 for domain names!
+
+** 033_aws-scaling/02_load-balacer **
+At the end of this demo we had our loadbalancer up and running which is connected to our EC2 instance(webserver) and you can only get to our web server through the load balancer. More detals on the readme
+
+** 033_aws-scaling/03_ami **
+- We created a machine image of our server and uses the image to create another instance. we now got both the EC2 server and the EC2 server that was from the image running as well. Then we observed the Load balancer switching between the two servers.
+- We learned how to connect to our RDS differently from our MySQL workbench now that we have some restrictions configured to our RDS machine. The overall idea here is knowing that any machine that has the "web-tier" security group applied to it can communicate with other machines with thesame security group as well usingTCP 3306 port; we will connect through SSH to our EC2 instance, then our instance we are able to connect to the MySQL database
+
+** 033_aws-scaling/04_hands-on **
+From the hands-on exercise(033_aws-scaling/04_hands-on), we reployed a new code to our instance have some database operations in it. Few things i learned from redeploying a new code version to your instance that has the old code.
+- First build the new binary for the new code version locally by running `GOOS=linux GOARCH=amd64 go build -o [some-name]`
+- Connect into the remove server using ssh
+- Go the the systemd service using cd /etc/systemd/system/
+- Stop the current running service for your code using `sudo systemd stop [filename].service`
+- Go back to the root directory of your old server by running `cd`
+- Then delete the old binary using the `sudo rm [some-name]`. NOTE if the binary is not at the root folder be sure to add the path to the folder in the remove command. - Exit our of the remote server
+- Copy the new binary from local to the remove server using the `scp` command
+- The connect back to the remove server to start back up the service we stopped. But first will have to modify the service file IF only the new binary file has another name. Modify the "ExecStart" value in the service file
+- Then reload the systemctl by running `sudo systemctl daemon-reload`
+- Run `sudo systemctl start [some-name].service` to start back up the file name
+- You can check the status to confirm it is running if you want
+
+Another way to have your new code run is you can remove the systemd service for the old code and create a new one but i did not have luck with that. I had to modify the existing service.
+It is important anytime you want to make a change in the systemd to stop the service, make the change, reload the systemd and then start the service back up again. DO NOT make the change when your service is running!!.
+
+There can be a few reasons why an endpoint from your remote server you invoke will cause an error like 502 BadGateway.
+- Maybe the environmental variables are not set yet and so your code will have a runtime error when the value it needs for a configuration from its environment is not there. See more on how to set environment variables on systemd service in the link below. You can even go as far as specifying a script that will run your executable. (https://askubuntu.com/questions/1063153/systemd-service-working-directory-not-change-the-directory)[https://askubuntu.com/questions/1063153/systemd-service-working-directory-not-change-the-directory]
+- Or maybe there is a bug in your code overall. So make sure the code is working locally without errors before you deploy. NoTE: after you build your executable locally you don't have to move the go.mod file to the remote server. Just be sure to move the folder paths of template files if needed by your code. I will look into on how to deploy code with hexagonal architecture to remove server
+

@@ -3,16 +3,18 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"io"
 	"net/http"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 var db *sql.DB
 
 func main() {
 	var err error
-	db, err = sql.Open("mysql", "awsuser:mypassword@tcp(mydbinstance.cakwl95bxza0.us-west-1.rds.amazonaws.com:3306)/test02?charset=utf8")
+	//FYI: In your ideal code, username, password and hostEndpoint saved in evironment variables.
+	db, err = sql.Open("mysql", "udemyokpaladev:mypassword@tcp(udemyokpaladev.cqwxwfcdjrrt.ca-central-1.rds.amazonaws.com:3306)/test02?charset=utf8")
 	check(err)
 	defer db.Close()
 
