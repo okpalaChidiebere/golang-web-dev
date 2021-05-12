@@ -13,7 +13,7 @@ func main() {
 
 	fmt.Println(s64)
 
-	bs, err := base64.StdEncoding.DecodeString(s64)
+	bs, err := base64.StdEncoding.DecodeString(s64) //this is how you decode the string!
 	if err != nil {
 		log.Fatalln("I'm giving her all she's got Captain!", err)
 	}
