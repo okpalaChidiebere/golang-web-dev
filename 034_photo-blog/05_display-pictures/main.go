@@ -3,13 +3,14 @@ package main
 import (
 	"crypto/sha1"
 	"fmt"
-	"github.com/satori/go.uuid"
 	"html/template"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 var tpl *template.Template
@@ -21,7 +22,7 @@ func init() {
 func main() {
 	http.HandleFunc("/", index)
 	// add route to serve pictures
-	http.Handle("/public/", http.StripPrefix("/public", http.FileServer(http.Dir("./public"))))
+	http.Handle("/public/", http.StripPrefix("/public", http.FileServer(http.Dir("./public")))) //we are serving all the files from the public dirctory
 	http.Handle("/favicon.ico", http.NotFoundHandler())
 	http.ListenAndServe(":8080", nil)
 }
