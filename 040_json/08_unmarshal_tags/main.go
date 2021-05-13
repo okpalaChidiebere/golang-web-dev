@@ -6,6 +6,13 @@ import (
 	"log"
 )
 
+/*
+This code is about unmarshalling with tags!
+
+The real JSON from the clients has another fields but i our server we names it somethign else.
+But we can still umarshal the JSON with its fields that the client sends with the help of tags!
+*/
+
 type city struct {
 	Bali       string  `json:"Postal"`
 	Kauai      float64 `json:"Latitude"`

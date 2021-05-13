@@ -9,6 +9,7 @@ import (
 // You can choose to only unmarshal some of the json data
 // Create a data structure that only has fields for some of the data
 type city struct {
+	//we are choosing the fields that we want to unmarshal
 	Latitude, Longitude float64
 	City                string
 }

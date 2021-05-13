@@ -5,6 +5,10 @@ import (
 	"fmt"
 )
 
+/*
+This code shows an example of what happens when you marshall an empty struct
+*/
+
 type model struct {
 	State    bool
 	Pictures []string
@@ -13,12 +17,12 @@ type model struct {
 func main() {
 	m := model{}
 
-	fmt.Println(m)
+	fmt.Println(m) //we get the zero values printed out like {false []}
 
 	bs, err := json.Marshal(m)
 	if err != nil {
 		fmt.Println("error: ", err)
 	}
 
-	fmt.Println(string(bs))
+	fmt.Println(string(bs)) //we get {"State": false, "Pictures: null"} as JSON
 }

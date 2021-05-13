@@ -7,6 +7,7 @@ import (
 )
 
 type model struct {
+	//Private fields for this struct. Private fields cannot be exported to JSON. We know that are private because they all starts with lowercases
 	state    bool
 	pictures []string
 }
@@ -29,5 +30,5 @@ func main() {
 		fmt.Println("error: ", err)
 	}
 
-	os.Stdout.Write(bs)
+	os.Stdout.Write(bs) //You get an empty JSON {} printed out because your struct fields are lower case. So they cannot be exported to JSON
 }

@@ -6,7 +6,12 @@ import (
 	"net/http"
 )
 
+/*
+The code here is an example of taking a go datastructure and turning it inot JSON using marshal and encode.
+*/
+
 type person struct {
+	//FYI these fields needs to be capitalised if you want them to export them to JSON
 	Fname string
 	Lname string
 	Items []string
@@ -30,7 +35,7 @@ func foo(w http.ResponseWriter, req *http.Request) {
 		You are at foo
 		</body>
 		</html>`
-	w.Write([]byte(s))
+	w.Write([]byte(s)) //basic conversion of strings to a slice of bytes
 }
 
 func mshl(w http.ResponseWriter, req *http.Request) {
@@ -40,11 +45,11 @@ func mshl(w http.ResponseWriter, req *http.Request) {
 		Lname: "Bond",
 		Items: []string{"Suit", "Gun", "Wry sense of humor"},
 	}
-	j, err := json.Marshal(p1)
+	j, err := json.Marshal(p1) //the Marshal() method returns a slice of bytes
 	if err != nil {
 		log.Println(err)
 	}
-	w.Write(j)
+	w.Write(j) //we can write back to the request the bytes!. If we have a writer that took a string we could convert the slice of bytes to a string easily
 }
 
 func encd(w http.ResponseWriter, req *http.Request) {
@@ -54,7 +59,7 @@ func encd(w http.ResponseWriter, req *http.Request) {
 		Lname: "Bond",
 		Items: []string{"Suit", "Gun", "Wry sense of humor"},
 	}
-	err := json.NewEncoder(w).Encode(p1)
+	err := json.NewEncoder(w).Encode(p1) //we encode to our writer and pass in our go data structure
 	if err != nil {
 		log.Println(err)
 	}
