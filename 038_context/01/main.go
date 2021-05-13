@@ -14,6 +14,6 @@ func main() {
 
 func foo(w http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
-	log.Println(ctx)
+	log.Println(ctx) //an example to see what is stored in a request context
 	fmt.Fprintln(w, ctx)
 }
