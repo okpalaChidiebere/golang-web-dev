@@ -3,15 +3,21 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/lib/pq"
 	"net/http"
+	"os"
+
+	_ "github.com/lib/pq"
 )
 
-var db *sql.DB
+var db *sql.DB //this variable is of type pointer to a sql database. This varible is now a package level scope
 
 func init() {
 	var err error
-	db, err = sql.Open("postgres", "postgres://bond:password@localhost/bookstore?sslmode=disable")
+	un := os.Getenv("POSTGRES_USERNAME")
+	pwd := os.Getenv("POSTGRES_PASSWORD")
+	h := os.Getenv("POSTGRES_HOST")
+	pdb := os.Getenv("POSTGRES_DATABASE")
+	db, err = sql.Open("postgres", "postgres://"+un+":"+pwd+"@"+h+"/"+pdb+"?sslmode=disable") //we use the = instad of :=
 	if err != nil {
 		panic(err)
 	}
@@ -29,18 +35,20 @@ type Book struct {
 	price  float32
 }
 
+//main function launches our listen and server as normal
 func main() {
 	http.HandleFunc("/books", booksIndex)
 	http.ListenAndServe(":8080", nil)
 }
 
+//we will do our query inside this function
 func booksIndex(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "GET" {
-		http.Error(w, http.StatusText(405), http.StatusMethodNotAllowed)
+	if r.Method != "GET" { //if the method is not get, we return an error
+		http.Error(w, http.StatusText(405), http.StatusMethodNotAllowed) //REMINDER: having th number 405 or http.StatusMethodNotAllowed are thesame!
 		return
 	}
 
-	rows, err := db.Query("SELECT * FROM books")
+	rows, err := db.Query("SELECT * FROM books") //we can access the package level variable here
 	if err != nil {
 		http.Error(w, http.StatusText(500), 500)
 		return
