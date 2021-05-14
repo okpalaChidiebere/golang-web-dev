@@ -3,8 +3,9 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/lib/pq"
 	"net/http"
+
+	_ "github.com/lib/pq"
 )
 
 var db *sql.DB
@@ -74,21 +75,28 @@ func booksShow(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	isbn := r.FormValue("isbn")
+	isbn := r.FormValue("isbn") //the FormValue will look for the variable `isbn` in the a submitted form, and if there is no for, it then check form the variable if it is passed from the url as params. in this app, we will pass it as params from the url
 	if isbn == "" {
 		http.Error(w, http.StatusText(400), http.StatusBadRequest)
 		return
 	}
 
-	row := db.QueryRow("SELECT * FROM books WHERE isbn = $1", isbn)
+	/*
+		We are querying a particular row
+		We use the dollar sign to pass argument to sql in postgress
+
+		Search for "$1" in this link to see more explanation
+		https://www.postgresql.org/docs/12/xfunc-sql.html
+	*/
+	row := db.QueryRow("SELECT * FROM books WHERE isbn = $1", isbn) //in the background, QueryRow has already clean up your query to avoid SQL injection. NICE!
 
 	bk := Book{}
 	err := row.Scan(&bk.isbn, &bk.title, &bk.author, &bk.price)
 	switch {
-	case err == sql.ErrNoRows:
+	case err == sql.ErrNoRows: //if the error returned is that we did not find anything (ther is no rows)
 		http.NotFound(w, r)
 		return
-	case err != nil:
+	case err != nil: //other types of error, means there is an internal server error (something went wrong with our server)
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		return
 	}
