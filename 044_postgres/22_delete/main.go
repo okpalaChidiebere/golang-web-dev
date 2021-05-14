@@ -3,10 +3,11 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/lib/pq"
 	"html/template"
 	"net/http"
 	"strconv"
+
+	_ "github.com/lib/pq"
 )
 
 var db *sql.DB
@@ -231,7 +232,7 @@ func booksDeleteProcess(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// delete book
-	_, err := db.Exec("DELETE FROM books WHERE isbn=$1;", isbn)
+	_, err := db.Exec("DELETE FROM books WHERE isbn=$1;", isbn) //we delete the book here
 	if err != nil {
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		return

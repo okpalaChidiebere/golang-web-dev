@@ -3,10 +3,11 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/lib/pq"
 	"html/template"
 	"net/http"
 	"strconv"
+
+	_ "github.com/lib/pq"
 )
 
 var db *sql.DB
@@ -42,8 +43,8 @@ func main() {
 	http.HandleFunc("/books/show", booksShow)
 	http.HandleFunc("/books/create", booksCreateForm)
 	http.HandleFunc("/books/create/process", booksCreateProcess)
-	http.HandleFunc("/books/update", booksUpdateForm)
-	http.HandleFunc("/books/update/process", booksUpdateProcess)
+	http.HandleFunc("/books/update", booksUpdateForm)            //this route will show a form that is pre-poulated with data from the db. The the user can updates the values and submit he updated values
+	http.HandleFunc("/books/update/process", booksUpdateProcess) //this enpoint runs when the user submit a form with the updated values and the rturns a confirmation page if the update was successful
 	http.ListenAndServe(":8080", nil)
 }
 
@@ -152,22 +153,25 @@ func booksCreateProcess(w http.ResponseWriter, r *http.Request) {
 	tpl.ExecuteTemplate(w, "created.gohtml", bk)
 }
 
+/*
+We put put the isbn value in the url as params which brought us to this page
+*/
 func booksUpdateForm(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
 		http.Error(w, http.StatusText(405), http.StatusMethodNotAllowed)
 		return
 	}
 
-	isbn := r.FormValue("isbn")
+	isbn := r.FormValue("isbn") //we get the isbn value from the url as expected
 	if isbn == "" {
 		http.Error(w, http.StatusText(400), http.StatusBadRequest)
 		return
 	}
 
-	row := db.QueryRow("SELECT * FROM books WHERE isbn = $1", isbn)
+	row := db.QueryRow("SELECT * FROM books WHERE isbn = $1", isbn) //we ge the record
 
 	bk := Book{}
-	err := row.Scan(&bk.Isbn, &bk.Title, &bk.Author, &bk.Price)
+	err := row.Scan(&bk.Isbn, &bk.Title, &bk.Author, &bk.Price) //we pull the recrod out and populate it in our struct
 	switch {
 	case err == sql.ErrNoRows:
 		http.NotFound(w, r)
@@ -176,11 +180,11 @@ func booksUpdateForm(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		return
 	}
-	tpl.ExecuteTemplate(w, "update.gohtml", bk)
+	tpl.ExecuteTemplate(w, "update.gohtml", bk) //we pass the book struct into our update page. The client at this point will see the values of the book before they may choose to update and submit a new version
 }
 
 func booksUpdateProcess(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "POST" {
+	if r.Method != "POST" { //we have to make sure the method is POST
 		http.Error(w, http.StatusText(405), http.StatusMethodNotAllowed)
 		return
 	}
@@ -207,7 +211,7 @@ func booksUpdateProcess(w http.ResponseWriter, r *http.Request) {
 	bk.Price = float32(f64)
 
 	// insert values
-	_, err = db.Exec("UPDATE books SET isbn = $1, title=$2, author=$3, price=$4 WHERE isbn=$1;", bk.Isbn, bk.Title, bk.Author, bk.Price)
+	_, err = db.Exec("UPDATE books SET isbn = $1, title=$2, author=$3, price=$4 WHERE isbn=$1;", bk.Isbn, bk.Title, bk.Author, bk.Price) //update the record
 	if err != nil {
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		return

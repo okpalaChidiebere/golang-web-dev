@@ -3,10 +3,11 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/lib/pq"
 	"html/template"
 	"net/http"
 	"strconv"
+
+	_ "github.com/lib/pq"
 )
 
 var db *sql.DB
@@ -30,6 +31,7 @@ func init() {
 // export fields to templates
 // fields changed to uppercase
 type Book struct {
+	//FYI: we capitilsed these fileds now so that they can be used outside of our package
 	Isbn   string
 	Title  string
 	Author string
@@ -112,6 +114,7 @@ func booksCreateForm(w http.ResponseWriter, r *http.Request) {
 	tpl.ExecuteTemplate(w, "create.gohtml", nil)
 }
 
+//this method will run then the form is submitted
 func booksCreateProcess(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, http.StatusText(405), http.StatusMethodNotAllowed)
@@ -132,20 +135,20 @@ func booksCreateProcess(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// convert form values
-	f64, err := strconv.ParseFloat(p, 32)
+	f64, err := strconv.ParseFloat(p, 32) //strconv.ParseFloat() method returns a float64
 	if err != nil {
 		http.Error(w, http.StatusText(406)+"Please hit back and enter a number for the price", http.StatusNotAcceptable)
 		return
 	}
-	bk.Price = float32(f64)
+	bk.Price = float32(f64) //convert float64 to float32. float32 is what we want as we defined in our struct
 
 	// insert values
-	_, err = db.Exec("INSERT INTO books (isbn, title, author, price) VALUES ($1, $2, $3, $4)", bk.Isbn, bk.Title, bk.Author, bk.Price)
+	_, err = db.Exec("INSERT INTO books (isbn, title, author, price) VALUES ($1, $2, $3, $4)", bk.Isbn, bk.Title, bk.Author, bk.Price) //more about what is retured by Exec incase you need them like # of rows affect or lastInsertedId https://golang.org/pkg/database/sql/#DB.Exec
 	if err != nil {
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		return
 	}
 
 	// confirm insertion
-	tpl.ExecuteTemplate(w, "created.gohtml", bk)
+	tpl.ExecuteTemplate(w, "created.gohtml", bk) //we write back a comfirmation page if all insert goes well
 }
