@@ -2,8 +2,9 @@ package books
 
 import (
 	"database/sql"
-	"github.com/GoesToEleven/golang-web-dev/045-code-organization/03_multiple-packages/config"
 	"net/http"
+
+	"github.com/GoesToEleven/golang-web-dev/045-code-organization/03_multiple-packages/config"
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
@@ -12,7 +13,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bks, err := AllBooks()
+	bks, err := AllBooks() //FYI: we could just call AllBooks() because although it is implemented at the models.go file, they are under thesame package name. Thesame thing applies to variables as well. We could use the vairables in that file if we want
 	if err != nil {
 		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 		return

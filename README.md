@@ -181,3 +181,27 @@ Skill you need to have in your Web Dev Toolkit
 - Fetch API Javascript: No need for XMLHttpRequest anymore.
 (https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)[https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch]
 (https://www.w3schools.com/js/js_api_fetch.asp)[https://www.w3schools.com/js/js_api_fetch.asp]
+
+# 044 - 045
+
+We learned how Postgres worked with Go.
+
+We saw an overview of how some of the queries from the documentation worked
+All Postgres SQL statements can be found (here)[https://www.postgresql.org/docs/12/sql-commands.html]
+
+We understood how to run the queres in terminal. But you can run thesame SQL queries in (Postbird)[https://github.com/Paxa/postbird] on Mac
+
+One thing to note if you are running from terminal is that once you login to your postgress
+- to see your databases: `\d`
+- To connect into a databases: `\c <database_name>`
+- to see the list of tables inside the database you connected into: `\d`
+- The you can now start to run SQL queries like Select, drop table, etc...
+
+Summary of SQL queries
+```sql
+SELECT <fields> FROM table
+<relation Like CROSS JOIN, INNER JOIN, LEFT OUTER JOIN, RIGHT OUTER JOIN, FULL OUTER JOIN> table (How do you want the tables to relate?)
+ON blah blah...(How are the fields connected?)
+```
+
+We also saw how to organise our code for better maitenance and readability. See folder `/045-code-organisation`
